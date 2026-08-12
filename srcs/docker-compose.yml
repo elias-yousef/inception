@@ -1,0 +1,25 @@
+services:
+ nginx:
+  build:
+   context: ./requirements/nginx
+   dockerfile: dockerfile
+  restart: always
+
+ mariadb:
+  build:
+   context: ./requirements/mariadb
+   dockerfile: dockerfile
+  restart: always
+
+ wordpress:
+  build:
+   context: ./requirements/wordpress
+   dockerfile: dockerfile
+  restart: always
+
+networks:
+
+volumes:
+
+
+
