@@ -1,0 +1,6 @@
+FROM debian:12
+
+
+
+
+CMD ["nginx", "-g", "daemon off;"]

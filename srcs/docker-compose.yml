@@ -3,23 +3,57 @@ services:
   build:
    context: ./requirements/nginx
    dockerfile: dockerfile
+  container_name: nginx
+  networks:
+   - inception
+  ports:
+   - "443:443"
+  volumes:
+   - wordpress_data:/var/lib/docker/volumes/
   restart: always
 
  mariadb:
   build:
    context: ./requirements/mariadb
    dockerfile: dockerfile
+  container_name: mariadb
+  networks:
+    - inception
+  volumes:
+  - mariadb_data:/var/lib/docker/volumes/
   restart: always
 
  wordpress:
   build:
    context: ./requirements/wordpress
    dockerfile: dockerfile
+  container_name: wordpress
+  networks:
+   - inception
+  volumes:
+   wordpress_data:/var/lib/docker/volumes/
   restart: always
 
 networks:
+  inception:
+    driver: bridge
+    name: inception
 
 volumes:
+ mariadb_data:
+  driver: local
+  driver_opts:
+   type: none
+   o: bind
+   device: /home/eabushak/data/mariadb
+ wordpress_data:
+  driver: local
+  driver_opts:
+   type: none
+   o: bind
+   device: /home/eabushak/data/wordpress
+
+
 
 
 
