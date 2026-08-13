@@ -31,7 +31,7 @@ services:
   networks:
    - inception
   volumes:
-   wordpress_data:/var/lib/docker/volumes/
+   - wordpress_data:/var/lib/docker/volumes/
   restart: always
 
 networks:
@@ -52,6 +52,13 @@ volumes:
    type: none
    o: bind
    device: /home/eabushak/data/wordpress
+
+secrets:
+ db_password:
+  file: ./secrets/db_password.txt
+ db_root_password:
+  file: ./secrets/db_root_password.txt
+  
 
 
 
