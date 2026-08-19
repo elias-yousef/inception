@@ -5,3 +5,7 @@ EXPOSE: acts as documentation by informing users
 which ports the containerized application listens on at runtime.
 FROM: initializes the build environment
 COPY: brings external files from your host machine into the container.
+
+CMD -> Find container name or ID (docker ps -a)
+    -> Launch an interactive shell session (docker exec -it (name or id) bash)
+    ->
