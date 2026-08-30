@@ -5,7 +5,7 @@ set -e
 DB_PASSWORD=$(cat /run/secrets/db_password)
 DB_ROOT_PASSWORD=$(cat /run/secrets/db_root_password)
 
-# what is -z ????
+# -z check for zero length string
 if [ -z "$MYSQL_DATABASE" ] || [ -z "$MYSQL_USER" ]; then
     echo "ERROR: MYSQL_DATABASE and MYSQL_USER env variables must be set."
     exit 1
@@ -33,10 +33,10 @@ if [ ! -d "/var/lib/mysql/mysql" ]; then
 -- set root pass --
 ALTER USER 'root'@'localhost' IDENTIFIED BY '${DB_ROOT_PASSWORD}';
 
--- creat WordPress datapase if not exist --
+-- creat WordPress database if not exist --
 CREATE DATABASE IF NOT EXISTS \`${MYSQL_DATABASE}\`;
 
--- creat word press database user --
+-- creat wordpress database user --
 CREATE USER IF NOT EXISTS '${MYSQL_USER}'@'%' IDENTIFIED BY '${DB_PASSWORD}';
 CREATE USER IF NOT EXISTS '${MYSQL_USER}'@'localhost' IDENTIFIED BY '${DB_PASSWORD}';
 

@@ -8,6 +8,6 @@ RUN sed -i -e 's/^bind-address.*/bind-address = 0.0.0.0/' /etc/mysql/mariadb.con
 
 EXPOSE 3306
 
-COPY conf/script.sh /script.sh
-RUN chmod +x script.sh
-CMD [ "./script.sh" ]
+COPY /conf/entrypoint.sh /entrypoint.sh
+RUN  chmod +x /entrypoint.sh
+ENTRYPOINT [ "/entrypoint.sh" ]

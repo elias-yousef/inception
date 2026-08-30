@@ -9,7 +9,9 @@ services:
   ports:
    - "443:443"
   volumes:
-   - wordpress_data:/var/lib/docker/volumes/
+   - wordpress_data:/var/www/html/
+  depends_on:
+    - wordpress
   restart: always
 
  mariadb:
@@ -20,7 +22,20 @@ services:
   networks:
     - inception
   volumes:
-  - mariadb_data:/var/lib/docker/volumes/
+    - mariadb_data:/var/lib/mysql/
+  env_file: .env
+  secrets:
+    - db_password
+    - db_root_password
+  environment:
+    db_password: /run/secrets/db_password
+    db_root_password: /run/secrets/db_root_password
+  healthcheck:
+    test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+    interval: 10s # check the helth every 10s
+    timeout: 5s # wait 5s to respone
+    retries: 5 # number of tries
+    start_period: 30s # if give the database 30 sec to work
   restart: always
 
  wordpress:
@@ -31,12 +46,23 @@ services:
   networks:
    - inception
   volumes:
-   - wordpress_data:/var/lib/docker/volumes/
+   - wordpress_data:/var/www/html/
+  env_file: .env
+  secrets:
+    - wp_admain_password
+    - wp_user_password
+  environment:
+    wp_user_password: /run/secrets/wp_user_password
+    wp_admain_password: /run/secrets/wp_admain_password
+  depends_on:
+    mariadb:
+      condition: service_healthy
   restart: always
 
-networks:
+networks: # our privet connection between the containers
   inception:
-    driver: bridge
+    driver: bridge # this make a vertual switch between the container
+                   # and make is isolated from my LAN network
     name: inception
 
 volumes:
