@@ -9,10 +9,12 @@ RUN mkdir -p /etc/nginx/ssl && \
     openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
     -keyout /etc/nginx/ssl/inception.key\
     -out /etc/nginx/ssl/inception.crt\
-    -subj "/C=JU/ST=IRBID/L=IRBID/o=42irbid/OU=Dep/CN=eabushak"
+    -subj "/C=JU/ST=IRBID/L=IRBID/o=42irbid/OU=Dep/CN=eabushak.fr"
 
 COPY conf/nginx.conf /etc/nginx/conf.d/
 
 EXPOSE 443
 
+# We explicitly tell NGINX NOT to run in the background. 
+# It stays attached to the terminal as PID 1. If NGINX crashes, the container crashes (which is what we want for auto-restarts)
 CMD ["nginx", "-g", "daemon off;"]
