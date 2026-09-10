@@ -1,4 +1,30 @@
 FROM debian:bookworm
 
-RUN apt-get update && \ 
-    apt-get install -y php-fpm php-mysql
+# 1. Install dependencies
+RUN apt-get update && apt-get install -y \
+    php-fpm \
+    php-mysql \
+    mariadb-client \
+    wget \
+    && rm -rf /var/lib/apt/lists/*
+
+# 2. Configure PHP-FPM to talk over the network
+RUN sed -i 's/listen = \/run\/php\/php8.2-fpm.sock/listen = 9000/g' /etc/php/8.2/fpm/pool.d/www.conf
+
+# 3. Download WP-CLI (The WordPress Command Line Interface)
+RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
+    && chmod +x wp-cli.phar \
+    && mv wp-cli.phar /usr/local/bin/wp
+
+# 4. Create the PID directory for PHP-FPM (Debian Trap)
+RUN mkdir -p /run/php
+
+# 5. Copy the entrypoint
+COPY conf/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+EXPOSE 9000
+
+# We will run PHP-FPM in the foreground in the entrypoint script, 
+# but we set the entrypoint command here.
+ENTRYPOINT ["/entrypoint.sh"]
