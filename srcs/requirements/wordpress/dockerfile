@@ -1,22 +1,29 @@
 FROM debian:bookworm
 
-# 1. Install dependencies
 RUN apt-get update && apt-get install -y \
+    # php-fpm FastCGI web server protocol
+    # for a fast comu between the web server
+    # and the app by keeping  app proc alive 
     php-fpm \
+    # translator
     php-mysql \
+    # command line to interact with maria
     mariadb-client \
+    # download files from internet
     wget \
     && rm -rf /var/lib/apt/lists/*
 
-# 2. Configure PHP-FPM to talk over the network
+# editing the php config filr to listern on 9000
+# that way nginx can forward php req across the net
 RUN sed -i 's/listen = \/run\/php\/php8.2-fpm.sock/listen = 9000/g' /etc/php/8.2/fpm/pool.d/www.conf
 
-# 3. Download WP-CLI (The WordPress Command Line Interface)
+# Download WP-CLI - The WordPress Command Line Interface
+# to managing wordpress throw command line
 RUN wget https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
     && chmod +x wp-cli.phar \
     && mv wp-cli.phar /usr/local/bin/wp
 
-# 4. Create the PID directory for PHP-FPM (Debian Trap)
+# Create the PID directory for PHP-FPM
 RUN mkdir -p /run/php
 
 # 5. Copy the entrypoint

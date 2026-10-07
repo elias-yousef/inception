@@ -1,13 +1,19 @@
 FROM debian:bookworm
 
+# last line wipe the defult database apt install
+# apt lists for apt cashes to make the image smaller
+
 RUN apt-get update && apt install -y mariadb-server \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /var/lib/mysql/*
 
+# defualt route that make mariadb listen to anything inside the private network
 RUN sed -i -e 's/^bind-address.*/bind-address = 0.0.0.0/' /etc/mysql/mariadb.conf.d/50-server.cnf
 
+# we use expose to make a doc that tell docker that it listen in this port in the privet network
 EXPOSE 3306
 
 COPY /conf/entrypoint.sh /entrypoint.sh
 RUN  chmod +x /entrypoint.sh
+# CMD vs ENTRYPOINT
 ENTRYPOINT [ "/entrypoint.sh" ]

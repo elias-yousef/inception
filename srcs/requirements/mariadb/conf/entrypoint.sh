@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# exit immediately  if any command fail
 set -e
 
 DB_PASSWORD=$(cat /run/secrets/db_password)
@@ -12,12 +13,14 @@ if [ -z "$MYSQL_DATABASE" ] || [ -z "$MYSQL_USER" ]; then
 fi
 
 #temp dir that stores PID and socker files while runing
+#-p prevent error it dir is exist
 mkdir -p /run/mysqld
 
-#change the ownership from root to the user and group (mysql)
+#change the ownership from root to the user and group(mysql)
 chown -R mysql:mysql /run/mysqld
 chown -R mysql:mysql /var/lib/mysql
 
+# /var/lib/mysql/mysql where mariadb store its databases
 if [ ! -d "/var/lib/mysql/mysql" ]; then
     echo "Initializing Mariadb data directory...."
     # creat MariaDB internal system databases
@@ -25,9 +28,8 @@ if [ ! -d "/var/lib/mysql/mysql" ]; then
     # Make sure that every file owned by the user mysql
     mariadb-install-db --user=mysql --datadir=/var/lib/mysql
 
-    # '@'%' it allow user to connect to database from everywhere
-    # '@'localhost' if i was inside the database
-
+# '@'%' it allow user to connect to database from everywhere
+# '@'localhost' if i was inside the database
     cat << EOF >/tmp/init.sql
 
 -- set root pass --
