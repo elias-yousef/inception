@@ -9,7 +9,7 @@ RUN mkdir -p /etc/nginx/ssl && \
     openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
     -keyout /etc/nginx/ssl/inception.key\
     -out /etc/nginx/ssl/inception.crt\
-    -subj "/C=JU/ST=IRBID/L=IRBID/o=42irbid/OU=Dep/CN=eabushak.fr"
+    -subj "/C=JU/ST=IRBID/L=IRBID/o=42irbid/OU=Dep/CN=eabushak.42.fr"
 
 COPY conf/nginx.conf /etc/nginx/conf.d/
 

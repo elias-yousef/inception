@@ -54,7 +54,7 @@ services:
     - wp_user_password
   environment:
     wp_user_password: /run/secrets/wp_user_password
-    wp_admain_password: /run/secrets/wp_admin_password
+    wp_admin_password: /run/secrets/wp_admin_password
   depends_on:
     mariadb:
       condition: service_healthy
