@@ -3,7 +3,7 @@ services:
   build:
    context: ./requirements/nginx
    dockerfile: dockerfile
-  container_name: nginx
+  image: nginx:12
   networks:
    - inception
   ports:
@@ -18,7 +18,7 @@ services:
   build:
    context: ./requirements/mariadb
    dockerfile: dockerfile
-  container_name: mariadb
+  image: mariadb:12
   networks:
     - inception
   volumes:
@@ -42,7 +42,7 @@ services:
   build:
    context: ./requirements/wordpress
    dockerfile: dockerfile
-  container_name: wordpress
+  image: wordpress:12
   networks:
    - inception
   volumes:

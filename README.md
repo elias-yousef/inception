@@ -508,14 +508,6 @@ output must not be copied blindly: the learner must understand and be
 able to explain every implementation choice and command, and should
 review the work with peers.
 
-**Record the actual use of AI for this project before submission.**
-Describe which tool(s) you used, the specific tasks they helped with
-(for example, README drafting, explaining Docker concepts, reviewing
-commands, or debugging), and which parts of the activity were affected.
-Remove examples that do not apply and do not claim that AI was used for
-tasks it did not perform. Peer review and personal verification remain
-essential.
-
 ## Related documentation
 
 -   **`USER_DOC.md`** --- must explain, in simple terms, the services
